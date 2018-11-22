@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Infoboard</title>
+    <meta http-equiv="refresh" content="600">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/umbrellajs
+"></script>
+    <script type="text/javascript">
+      var stages_count = 4;
+
+      var i = 0;
+      setInterval(function() {
+        u("#weather-info").removeClass("slice" + i.toString());
+        i = (i + 1) % stages_count;
+        u("#weather-info").addClass("slice" + i.toString());
+      }, 2000);
+    </script>
+
+    <style type="text/css">
+      body {
+        box-sizing: border-box;
+        width: 480px;
+        height: 320px;
+        border: 1px solid red;
+        background-color: black;
+        overflow: hidden;
+      }
+      .panel {
+        height: 100%;
+        width: 100%;
+        display: block;
+        overflow: hidden;
+      }
+      .panel-content {
+        height: 100%;
+        width: 100%;
+        transform: scale(2.2);
+        background-image: url('http://wttr.in/London?1');
+        background-position: 127px -12px;
+        background-repeat: no-repeat;
+      }
+
+      .slice0 { background-position: 127px -12px; }
+      .slice1 { background-position: -90px -12px; }
+      .slice2 { background-position: -307px -12px; }
+      .slice3 { background-position: -524px -12px; }
+    </style>
+  </head>
+
+  <body>
+    <div class="panel">
+      <div id="weather-info" class="panel-content slice0">
+      </div>
+    </div>
+  </body>
+</html>
