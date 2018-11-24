@@ -1,0 +1,11 @@
+FROM ubuntu:bionic
+
+RUN apt-get update && \
+    apt-get -y --no-install-recommends install make build-essential
+
+RUN apt-get -y install pkg-config libgtk-3-dev libwebkit2gtk-4.0-dev
+
+COPY . /app
+WORKDIR /app
+
+RUN make
