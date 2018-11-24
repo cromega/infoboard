@@ -17,10 +17,14 @@ int main(int argc, char* argv[]) {
   g_signal_connect(main_window, "destroy", G_CALLBACK(destroyWindowCb), NULL);
 
   WebKitWebView *webView = WEBKIT_WEB_VIEW(webkit_web_view_new());
-
   gtk_container_add(GTK_CONTAINER(main_window), GTK_WIDGET(webView));
 
-  webkit_web_view_load_uri(webView, "file:///home/cromega/code/sublimia/infoboard/web/index.html");
+  char cwd[PATH_MAX];
+  getcwd(cwd, sizeof(cwd));
+  char path[PATH_MAX];
+  sprintf(path, "file:///%s/web/index.html", cwd);
+
+  webkit_web_view_load_uri(webView, path);
   gtk_widget_grab_focus(GTK_WIDGET(webView));
   gtk_widget_show_all(main_window);
 
