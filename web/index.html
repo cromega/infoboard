@@ -4,15 +4,72 @@
     <title>Infoboard</title>
     <meta http-equiv="refresh" content="600">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/umbrellajs"></script>
+    <script type="text/javascript" src="http://builds.handlebarsjs.com.s3.amazonaws.com/handlebars-v4.0.12.js"></script>
+    <script id="templates/forecast" type="text/x-handlebars-template">
+      <ul class="forecast">
+      {{#each forecasts}}
+      <li class="forecast-entry">
+        <span class="time">{{time}}</time>
+        <img class="icon" src="{{iconUrl}}" alt="icon" />
+        <div class="clearer"></div>
+        <span>{{temp}}</span><br>
+        <span>Rain? {{rain}}
+      </li>
+      {{/each}}
+      </ul>
+    </script>
     <script type="text/javascript">
-      var stages_count = 4;
+      var Forecast = function(response) {
+        var
+          _getIconUrl = function(icon) {
+            return "http://openweathermap.org/img/w/" + icon + ".png";
+          },
+          _getRainSummary = function(rain) {
+            var summary;
+            if (rain == undefined || rain["3h"] < 0.1) {
+              summary = "No";
+            } else if (rain["3h"] < 0.5) {
+              summary = "Light";
+            } else {
+              summary = "Lots. Probably"
+            };
+            return summary;
+          },
+          _forecasts = response.list.slice(0, 4).map(function(forecast) {
+            return {
+              time: forecast.dt_txt.split(" ")[1].split(":").slice(0, 2).join(":"),
+              temp: forecast.main.temp + "C",
+              iconUrl: _getIconUrl(forecast.weather[0].icon),
+              rain: _getRainSummary(forecast.rain),
+            };
+          });
 
-      var i = 0;
-      setInterval(function() {
-        u("#weather-info").removeClass("slice" + i.toString());
-        i = (i + 1) % stages_count;
-        u("#weather-info").addClass("slice" + i.toString());
-      }, 2000);
+        return {
+          forecasts: _forecasts
+        }
+      };
+
+      fetch("http://lvh.me:9000/forecast")
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(json) {
+        displayWeather(json);
+      })
+      .catch(function(err) {
+        console.log("faszom");
+        console.log(err);
+      });
+
+      var displayWeather = function(weatherData) {
+        var source = document.getElementById("templates/forecast").innerHTML;
+        var template = Handlebars.compile(source);
+
+        console.log(weatherData);
+        var forecast = new Forecast(weatherData);
+        u("#weather-info").html(template(forecast));
+      };
+
     </script>
 
     <style type="text/css">
@@ -25,8 +82,9 @@
         box-sizing: border-box;
         width: 100%;
         height: 100%;
-        background-color: black;
+        border: 1px solid darkgray;
         overflow: hidden;
+        background-color: gray;
       }
       .panel {
         height: 100%;
@@ -34,24 +92,31 @@
         display: block;
         overflow: hidden;
       }
-      .panel-content {
-        height: 100%;
-        width: 100%;
-        transform: scale(2.2);
-        background-image: url('http://wttr.in/London.png?1');
-        background-repeat: no-repeat;
+
+      ul.forecast {
+        padding: 0px;
+        margin: 0px;
       }
 
-      .slice0 { background-position: 127px -12px; }
-      .slice1 { background-position: -90px -12px; }
-      .slice2 { background-position: -307px -12px; }
-      .slice3 { background-position: -524px -12px; }
+      li.forecast-entry {
+        float: left;
+        width: 239px;
+        height: 159px;
+        list-style: none;
+        color: white;
+        font-size: 140%;
+      }
+      .icon {
+        width: 100px;
+        height: 100px;
+      }
+      .clearer { clear: both; }
     </style>
   </head>
 
   <body>
     <div class="panel">
-      <div id="weather-info" class="panel-content slice0">
+      <div id="weather-info" class="panel-content">
       </div>
     </div>
   </body>
