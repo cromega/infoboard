@@ -14,6 +14,9 @@ int main(int argc, char* argv[]) {
 
   GtkWidget *main_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
   gtk_window_set_default_size(GTK_WINDOW(main_window), WINDOW_WIDTH, WINDOW_HEIGHT);
+
+  GtkWindow* window = gtk_widget_get_ancestor(main_window, GTK_TYPE_WINDOW);
+  gtk_window_fullscreen(window);
   g_signal_connect(main_window, "destroy", G_CALLBACK(destroyWindowCb), NULL);
 
   WebKitWebView *webView = WEBKIT_WEB_VIEW(webkit_web_view_new());
