@@ -25,15 +25,18 @@
             return "http://openweathermap.org/img/w/" + icon + ".png";
           },
           _getRainSummary = function(rain) {
+            if (rain === undefined) { return "No"; }
+
+            var rainmm = rain["3h"];
             var summary;
-            if (rain == undefined || rain["3h"] < 0.1) {
+            if (rainmm < 0.1) {
               summary = "No";
-            } else if (rain["3h"] < 0.5) {
+            } else if (rainmm < 0.5) {
               summary = "Light";
             } else {
               summary = "Lots. Probably"
             };
-            return summary;
+            return summary + "( " + rainmm.toString() + ")";
           },
           _forecasts = response.list.slice(0, 4).map(function(forecast) {
             return {
@@ -49,27 +52,34 @@
         }
       };
 
-      fetch("http://lvh.me:9000/forecast")
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(json) {
-        displayWeather(json);
-      })
-      .catch(function(err) {
-        console.log("faszom");
-        console.log(err);
-      });
+      var updateWeather = function() {
+        fetch("http://lvh.me:9000/forecast")
+        .then(function(response) {
+          return response.json();
+        })
+        .then(function(json) {
+          displayWeather(json);
+        })
+        .catch(function(err) {
+          console.log("faszom");
+          console.log(err);
+        });
+      };
+
+      setInterval(function() {
+        updateWeather;
+      }, 600000);
 
       var displayWeather = function(weatherData) {
         var source = document.getElementById("templates/forecast").innerHTML;
         var template = Handlebars.compile(source);
 
-        console.log(weatherData);
         var forecast = new Forecast(weatherData);
         u("#weather-info").html(template(forecast));
+
       };
 
+      updateWeather();
     </script>
 
     <style type="text/css">
