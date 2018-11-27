@@ -38,13 +38,19 @@
             };
             return summary + " (" + (Math.round(rainmm * 100) / 100).toString() + "mm)";
           },
+          _getWindSummary = function(wind) {
+            if (wind === undefined) { return "No" }
+
+            var kph = wind.speed * 3.6;
+            return (Math.round(kph * 100) / 100).toString() + "kph";
+          },
           _forecasts = response.list.slice(0, 4).map(function(forecast) {
             return {
               time: forecast.dt_txt.split(" ")[1].split(":").slice(0, 2).join(":"),
               temp: Math.round(forecast.main.temp) + "C",
               iconUrl: _getIconUrl(forecast.weather[0].icon),
               rain: _getRainSummary(forecast.rain),
-              wind: (Math.round(forecast.wind.speed * 100) / 100).toString() + "kph",
+              wind: _getWindSummary(forecast.wind),
             };
           });
 
