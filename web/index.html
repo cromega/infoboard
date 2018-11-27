@@ -9,11 +9,11 @@
       <ul class="forecast">
       {{#each forecasts}}
       <li class="forecast-entry">
-        <span class="time">{{time}}</time>
+        <span class="time">{{time}}</span>
         <img class="icon" src="{{iconUrl}}" alt="icon" />
         <div class="clearer"></div>
-        <span>{{temp}}</span><br>
-        <span>Rain? {{rain}}
+        <span>{{temp}}</span>, <span>Wind: {{wind}}<span><br>
+        <span>{{rain}}</span>
       </li>
       {{/each}}
       </ul>
@@ -25,18 +25,18 @@
             return "http://openweathermap.org/img/w/" + icon + ".png";
           },
           _getRainSummary = function(rain) {
-            if (rain === undefined) { return "No"; }
+            if (rain === undefined) { return "No rain"; }
 
             var rainmm = rain["3h"];
             var summary;
             if (rainmm < 0.1) {
-              summary = "No";
+              summary = "No rain";
             } else if (rainmm < 0.5) {
-              summary = "Light";
+              summary = "Light rain";
             } else {
-              summary = "Lots. Probably"
+              summary = "Heavy rain"
             };
-            return summary + " (" + rainmm.toString() + "mm)";
+            return summary + " (" + (Math.round(rainmm * 100) / 100).toString() + "mm)";
           },
           _forecasts = response.list.slice(0, 4).map(function(forecast) {
             return {
@@ -44,6 +44,7 @@
               temp: Math.round(forecast.main.temp) + "C",
               iconUrl: _getIconUrl(forecast.weather[0].icon),
               rain: _getRainSummary(forecast.rain),
+              wind: (Math.round(forecast.wind.speed * 100) / 100).toString() + "kph",
             };
           });
 
@@ -114,7 +115,11 @@
         height: 159px;
         list-style: none;
         color: white;
-        font-size: 140%;
+        font-size: 130%;
+      }
+      .time {
+        float: left;
+        line-height: 70px;
       }
       .icon {
         width: 100px;
