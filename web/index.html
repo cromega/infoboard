@@ -21,18 +21,18 @@
     </script>
     <script id="templates/tube-status" type="text/x-handlebars-template">
       <div id="tube-disruptions">
-      {{#each alerts}}
-        <div class="coloumn {{lineId}}">
-          <p>
-            <span>{{line}}</span><br />
-            <span>{{summary}}</span>
-          </p>
-        </div>
-      {{else}}
-        <div class="coloumn">
-          <p>All good</p>
-        </div>
-      {{/each}}
+        {{#each alerts}}
+          <div class="coloumn {{lineId}}">
+            <p>
+              <span>{{line}}</span><br />
+              <span>{{summary}}</span>
+            </p>
+          </div>
+        {{else}}
+          <div class="coloumn">
+            <p>All good</p>
+          </div>
+        {{/each}}
       </div>
     </script>
 
@@ -110,7 +110,8 @@
 
       setInterval(function() {
         getData("http://lvh.me:9000/forecast", displayWeather);
-        getData("https://gist.githubusercontent.com/cromega/f72412ec9a88e649a4973c5100911698/raw/83bf940cb3521e40c7589f884ef64024a758c460/tube.json", displayTubeStatus);
+        getData("https://api.tfl.gov.uk/line/mode/tube/status", displayTubeStatus);
+        //getData("https://gist.githubusercontent.com/cromega/f72412ec9a88e649a4973c5100911698/raw/83bf940cb3521e40c7589f884ef64024a758c460/tube.json", displayTubeStatus);
       }, 600000);
 
       var displayWeather = function(weatherData) {
@@ -130,20 +131,26 @@
         u("#tube-status").html(template(tubeStatus));
       };
 
+      var swapScreens = function() {
+        var screens = Array.from(document.getElementsByClassName("panel-content"));
+        var activeScreen = document.getElementsByClassName("panel-content on")[0];
+        var activeIndex = screens.indexOf(activeScreen);
+        activeScreen.classList.remove("on");
+        screens[(activeIndex + 1) % screens.length].classList.add("on");
+      };
+
+      setInterval(swapScreens, 5000);
+
       getData("http://lvh.me:9000/forecast", displayWeather);
-      getData("https://gist.githubusercontent.com/cromega/f72412ec9a88e649a4973c5100911698/raw/83bf940cb3521e40c7589f884ef64024a758c460/tube.json", displayTubeStatus);
+      getData("https://api.tfl.gov.uk/line/mode/tube/status", displayTubeStatus);
+      //getData("https://gist.githubusercontent.com/cromega/f72412ec9a88e649a4973c5100911698/raw/83bf940cb3521e40c7589f884ef64024a758c460/tube.json", displayTubeStatus);
     </script>
 
     <style type="text/css">
-      html {
+      body {
         width: 480px;
         height: 320px;
-      }
-
-      body {
         box-sizing: border-box;
-        width: 100%;
-        height: 100%;
         border: 1px solid darkgray;
         overflow: hidden;
         background-color: gray;
@@ -152,7 +159,6 @@
         height: 100%;
         width: 100%;
         display: block;
-        overflow: hidden;
       }
 
       ul.forecast {
@@ -178,6 +184,7 @@
       }
 
       #tube-disruptions {
+        position: absolute;
         width: 100%;
         display: table;
       }
@@ -200,6 +207,11 @@
         padding: 10px;
       }
 
+      .panel-content {
+        visibility: hidden;
+      }
+      .panel-content.on { visibility: visible; }
+
       #tube-disruptions .bakerloo { background-color: #B36305; }
       #tube-disruptions .central { background-color: #E32017; }
       #tube-disruptions .circle { background-color: #FFD300; }
@@ -219,7 +231,7 @@
 
   <body>
     <div class="panel">
-      <div id="weather-info" class="panel-content"></div>
+      <div id="weather-info" class="panel-content on"></div>
       <div id="tube-status" class="panel-content"></div>
     </div>
   </body>
