@@ -24,8 +24,8 @@
       {{#each alerts}}
         <div class="coloumn {{lineId}}">
           <p>
-          <span>{{line}}</span><br />
-          <span>{{summary}}</span>
+            <span>{{line}}</span><br />
+            <span>{{summary}}</span>
           </p>
         </div>
       {{else}}
@@ -200,18 +200,26 @@
       }
 
       #tube-disruptions {
+        width: 100%;
         display: table;
       }
+
       #tube-disruptions > .coloumn {
-        display: table-cell;
+        max-width: 140px;
+        display: table;
         float: left;
-        width: auto;
+        height: 320px;
       }
 
       #tube-disruptions p {
-        font-size: 130%;
+        color: white;
+        mix-blend-mode: exclusion;
+        text-shadow: 3px 3px 0px #000;
+        vertical-align: middle;
         text-align: center;
-        line-height: 160px;
+        display: table-cell;
+        font-size: 140%;
+        padding: 10px;
       }
 
       #tube-disruptions .bakerloo { background-color: #B36305; }
