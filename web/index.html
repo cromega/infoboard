@@ -5,6 +5,7 @@
     <meta http-equiv="refresh" content="600">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/umbrellajs"></script>
     <script type="text/javascript" src="http://builds.handlebarsjs.com.s3.amazonaws.com/handlebars-v4.0.12.js"></script>
+
     <script id="templates/forecast" type="text/x-handlebars-template">
       <ul class="forecast">
       {{#each forecasts}}
@@ -18,7 +19,48 @@
       {{/each}}
       </ul>
     </script>
+    <script id="templates/tube-status" type="text/x-handlebars-template">
+      <div id="tube-disruptions">
+      {{#each alerts}}
+        <div class="coloumn {{lineId}}">
+          <p>
+          <span>{{line}}</span><br />
+          <span>{{summary}}</span>
+          </p>
+        </div>
+      {{else}}
+        <div class="coloumn">
+          <p>All good</p>
+        </div>
+      {{/each}}
+      </div>
+    </script>
+
     <script type="text/javascript">
+      var TubeAlerts = function(response) {
+        var _getAlerts = function() {
+          var affectedLines = response.filter(function(line) {
+            return line.lineStatuses[0].statusSeverityDescription != "Good Service";
+          });
+          console.log(response);
+          console.log(affectedLines);
+
+          var alerts = affectedLines.map(function(line) {
+            return {
+              line: line.name,
+              lineId: line.id,
+              summary: line.lineStatuses[0].statusSeverityDescription
+            };
+          });
+
+          return alerts;
+        };
+
+        return {
+          alerts: _getAlerts()
+        }
+      }
+
       var Forecast = function(response) {
         var
           _getIconUrl = function(icon) {
@@ -73,8 +115,24 @@
         });
       };
 
+      var updateTubeStatus = function() {
+        fetch("https://api.tfl.gov.uk/line/mode/tube/status")
+        fetch("https://gist.githubusercontent.com/cromega/f72412ec9a88e649a4973c5100911698/raw/83bf940cb3521e40c7589f884ef64024a758c460/tube.json")
+        .then(function(response) {
+          return response.json();
+        })
+        .then(function(json) {
+          displayTubeStatus(json);
+        })
+        .catch(function(err) {
+          console.log("faszom");
+          console.log(err);
+        });
+      };
+
       setInterval(function() {
-        updateWeather;
+        //updateWeather;
+        updateTubeStatus;
       }, 600000);
 
       var displayWeather = function(weatherData) {
@@ -83,10 +141,19 @@
 
         var forecast = new Forecast(weatherData);
         u("#weather-info").html(template(forecast));
-
       };
 
-      updateWeather();
+      var displayTubeStatus = function(tubeStatusData) {
+        var source = document.getElementById("templates/tube-status").innerHTML;
+        var template = Handlebars.compile(source);
+
+        var tubeStatus = new TubeAlerts(tubeStatusData);
+        console.log(tubeStatus);
+        u("#tube-status").html(template(tubeStatus));
+      };
+
+      //updateWeather();
+      updateTubeStatus();
     </script>
 
     <style type="text/css">
@@ -131,14 +198,43 @@
         width: 100px;
         height: 100px;
       }
+
+      #tube-disruptions {
+        display: table;
+      }
+      #tube-disruptions > .coloumn {
+        display: table-cell;
+        float: left;
+        width: auto;
+      }
+
+      #tube-disruptions p {
+        font-size: 130%;
+        text-align: center;
+        line-height: 160px;
+      }
+
+      #tube-disruptions .bakerloo { background-color: #B36305; }
+      #tube-disruptions .central { background-color: #E32017; }
+      #tube-disruptions .circle { background-color: #FFD300; }
+      #tube-disruptions .district { background-color: #00782A; }
+      #tube-disruptions .hammersmith { background-color: #F3A9BB; }
+      #tube-disruptions .jubilee { background-color: #A0A5A9; }
+      #tube-disruptions .metropolitan { background-color: #9B0056; }
+      #tube-disruptions .northern { background-color: #000000; }
+      #tube-disruptions .piccadilly { background-color: #003688; }
+      #tube-disruptions .victoria { background-color: #0098D4; }
+      #tube-disruptions .waterloo { background-color: #95CDBA; }
+      #tube-disruptions .dlr { background-color: #00A4A7; }
+      #tube-disruptions .overground { background-color: #EE7C0E; }
       .clearer { clear: both; }
     </style>
   </head>
 
   <body>
     <div class="panel">
-      <div id="weather-info" class="panel-content">
-      </div>
+      <div id="weather-info" class="panel-content"></div>
+      <div id="tube-status" class="panel-content"></div>
     </div>
   </body>
 </html>
