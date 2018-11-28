@@ -101,38 +101,16 @@
         }
       };
 
-      var updateWeather = function() {
-        fetch("http://lvh.me:9000/forecast")
-        .then(function(response) {
-          return response.json();
-        })
-        .then(function(json) {
-          displayWeather(json);
-        })
-        .catch(function(err) {
-          console.log("faszom");
-          console.log(err);
-        });
-      };
-
-      var updateTubeStatus = function() {
-        fetch("https://api.tfl.gov.uk/line/mode/tube/status")
-        fetch("https://gist.githubusercontent.com/cromega/f72412ec9a88e649a4973c5100911698/raw/83bf940cb3521e40c7589f884ef64024a758c460/tube.json")
-        .then(function(response) {
-          return response.json();
-        })
-        .then(function(json) {
-          displayTubeStatus(json);
-        })
-        .catch(function(err) {
-          console.log("faszom");
-          console.log(err);
-        });
+      var getData = function(url, handler) {
+        fetch(url)
+          .then(response => response.json())
+          .then(handler)
+          .catch(err => console.log(err));
       };
 
       setInterval(function() {
-        //updateWeather;
-        updateTubeStatus;
+        getData("http://lvh.me:9000/forecast", displayWeather);
+        getData("https://gist.githubusercontent.com/cromega/f72412ec9a88e649a4973c5100911698/raw/83bf940cb3521e40c7589f884ef64024a758c460/tube.json", displayTubeStatus);
       }, 600000);
 
       var displayWeather = function(weatherData) {
@@ -152,8 +130,8 @@
         u("#tube-status").html(template(tubeStatus));
       };
 
-      //updateWeather();
-      updateTubeStatus();
+      getData("http://lvh.me:9000/forecast", displayWeather);
+      getData("https://gist.githubusercontent.com/cromega/f72412ec9a88e649a4973c5100911698/raw/83bf940cb3521e40c7589f884ef64024a758c460/tube.json", displayTubeStatus);
     </script>
 
     <style type="text/css">
