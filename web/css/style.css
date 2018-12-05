@@ -1,11 +1,5 @@
 body { width: 480px; height: 320px; box-sizing: border-box; border: 1px solid darkgray; overflow: hidden; background-color: gray; }
 
-.panel { height: 100%; width: 100%; display: block; }
-
-.panel-content { visibility: hidden; }
-
-.panel-content.on { visibility: visible; }
-
 .clearfix { clear: both; }
 
 #tube-disruptions { position: absolute; width: 100%; display: table; }

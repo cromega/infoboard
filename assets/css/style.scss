@@ -7,18 +7,4 @@ body {
   background-color: gray;
 }
 
-.panel {
-  height: 100%;
-  width: 100%;
-  display: block;
-}
-
-.panel-content {
-  visibility: hidden;
-
-  &.on {
-    visibility: visible;
-  }
-}
-
 .clearfix { clear: both; }

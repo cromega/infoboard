@@ -7,7 +7,6 @@ var Fetcher = function(config) {
       then(response => response.json()).
       then(json => _cache[config.name] = json)
       .catch(err => console.log(err));
-
   };
 
   var _refresh = function() {

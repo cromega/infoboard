@@ -1,6 +1,7 @@
 var Infoboard = function(container, config) {
   var _fetcher = new Fetcher(config);
   _fetcher.refresh();
+
   setInterval(function() {
     _fetcher.refresh();
   }, 600000);
@@ -50,10 +51,9 @@ const config = [
 u(document).on("DOMContentLoaded", function() {
   var app = new Infoboard(
     u("#app"),
-    config
+    config,
   );
-  setTimeout(function() {
-    app.nextScreen();
-  }, 2000);
+  setTimeout(_ => app.nextScreen(), 1000);
+  setInterval(_ => app.nextScreen(), 10000);
 });
 
