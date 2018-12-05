@@ -2,3 +2,4 @@ app
 build/*
 api
 .env
+assets/js/openweathermap.conf.js

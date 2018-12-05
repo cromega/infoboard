@@ -1,0 +1,49 @@
+body { width: 480px; height: 320px; box-sizing: border-box; border: 1px solid darkgray; overflow: hidden; background-color: gray; }
+
+.panel { height: 100%; width: 100%; display: block; }
+
+.panel-content { visibility: hidden; }
+
+.panel-content.on { visibility: visible; }
+
+.clearfix { clear: both; }
+
+#tube-disruptions { position: absolute; width: 100%; display: table; }
+
+#tube-disruptions .coloumn { max-width: 140px; display: table; float: left; height: 320px; }
+
+#tube-disruptions p { color: white; mix-blend-mode: exclusion; text-shadow: 3px 3px 0px #000; vertical-align: middle; text-align: center; display: table-cell; font-size: 140%; padding: 10px; }
+
+#tube-disruptions .bakerloo { background-color: #B36305; }
+
+#tube-disruptions .central { background-color: #E32017; }
+
+#tube-disruptions .circle { background-color: #FFD300; }
+
+#tube-disruptions .district { background-color: #00782A; }
+
+#tube-disruptions .hammersmith { background-color: #F3A9BB; }
+
+#tube-disruptions .jubilee { background-color: #A0A5A9; }
+
+#tube-disruptions .metropolitan { background-color: #9B0056; }
+
+#tube-disruptions .northern { background-color: #000000; }
+
+#tube-disruptions .piccadilly { background-color: #003688; }
+
+#tube-disruptions .victoria { background-color: #0098D4; }
+
+#tube-disruptions .waterloo { background-color: #95CDBA; }
+
+#tube-disruptions .dlr { background-color: #00A4A7; }
+
+#tube-disruptions .overground { background-color: #EE7C0E; }
+
+#weather-info ul.forecast { padding: 0px; margin: 0px; }
+
+#weather-info li.forecast-entry { float: left; width: 239px; height: 159px; list-style: none; color: white; font-size: 130%; }
+
+#weather-info .time { float: left; line-height: 70px; }
+
+#weather-info .icon { width: 100px; height: 100px; }

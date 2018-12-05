@@ -1,0 +1,25 @@
+#weather-info {
+  ul.forecast {
+    padding: 0px;
+    margin: 0px;
+  }
+
+  li.forecast-entry {
+    float: left;
+    width: 239px;
+    height: 159px;
+    list-style: none;
+    color: white;
+    font-size: 130%;
+  }
+
+  .time {
+    float: left;
+    line-height: 70px;
+  }
+
+  .icon {
+    width: 100px;
+    height: 100px;
+  }
+}
