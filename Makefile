@@ -7,7 +7,7 @@ JS_TARGET=web/js/infoboard.js
 JS_SOURCES=$(wildcard assets/js/*.js)
 
 .PHONY: all
-all: app api $(CSS_TARGET) $(JS_TARGET)
+all: app $(CSS_TARGET) $(JS_TARGET)
 
 app: build/app.o
 	$(CC) build/app.o $(LDFLAGS) -o app
@@ -23,6 +23,3 @@ $(CSS_TARGET): $(CSS_SOURCES)
 $(JS_TARGET): $(JS_SOURCES)
 	mkdir -p web/js
 	cat assets/js/*.js > $@
-
-api: api.go
-	CGO_ENABLED=0 go build -o api
