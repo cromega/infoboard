@@ -1,7 +1,7 @@
 function Forecast(response) {
   var
-    _getIconUrl = function(icon) {
-      return "http://openweathermap.org/img/w/" + icon + ".png";
+    _getIconUrl = function(forecast) {
+      return "http://openweathermap.org/img/w/" + forecast.weather[0].icon + ".png";
     },
     _getRainSummary = function(rain) {
       if (rain === undefined) { return "No rain"; }
@@ -27,7 +27,7 @@ function Forecast(response) {
       return {
         time: forecast.dt_txt.split(" ")[1].split(":").slice(0, 2).join(":"),
         temp: Math.round(forecast.main.temp) + "C",
-        iconUrl: _getIconUrl(forecast.weather[0].icon),
+        iconUrl: _getIconUrl(forecast),
         rain: _getRainSummary(forecast.rain),
         wind: _getWindSummary(forecast.wind),
       };
