@@ -1,7 +1,10 @@
+# Raspberry PI weather and tube status monitor
+
 ## Requirements
 
 * gtk3
 * webkit2 4
+* docker for building
 
 ## Build
 
