@@ -4,3 +4,4 @@ api
 .env
 assets/js/openweathermap.conf.js
 web/js/infoboard.js
+elm-stuff
