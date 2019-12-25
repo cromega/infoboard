@@ -1,0 +1,13 @@
+name: infoboard_backend
+version: 0.1.0
+
+authors:
+  - Bence Monus <crome@moronia.hu>
+
+targets:
+  infoboard_backend:
+    main: src/infoboard_backend.cr
+
+crystal: 0.32.1
+
+license: MIT
