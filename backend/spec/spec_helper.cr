@@ -1,2 +1,5 @@
+ENV["KEMAL_ENV"] = "test"
+
 require "spec"
-require "../src/infoboard_backend"
+require "spec-kemal"
+

@@ -1,6 +1,16 @@
-# TODO: Write documentation for `InforboardBackend`
+require "kemal"
+require "./tube_checker"
+
 module InfoboardBackend
   VERSION = "0.1.0"
 
-  # TODO: Put your code here
+  get "/status" do
+    "OK"
+  end
+
+  get "/tube" do
+    TubeChecker.new.problems.to_json
+  end
 end
+
+Kemal.run

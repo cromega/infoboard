@@ -8,6 +8,16 @@ targets:
   infoboard_backend:
     main: src/infoboard_backend.cr
 
+dependencies:
+  kemal:
+    github: kemalcr/kemal
+
+development_dependencies:
+  spec-kemal:
+    github: kemalcr/spec-kemal
+  webmock:
+    github: manastech/webmock.cr
+
 crystal: 0.32.1
 
 license: MIT
