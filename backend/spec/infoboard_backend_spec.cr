@@ -17,7 +17,7 @@ describe InfoboardBackend do
         to_return(body: File.read("spec/fixtures/tfl_response.json"))
     end
 
-    it "responds" do
+    it "responds with the tube alerts" do
       get "/tube"
       response.body.should eq %([{\"line\":\"bakerloo\",\"status\":\"Minor Delays\"}])
     end
