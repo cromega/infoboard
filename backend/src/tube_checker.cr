@@ -1,4 +1,5 @@
 require "./tfl_entities"
+require "./tfl_status"
 
 class TubeChecker
   BASE_URL = "https://api.tfl.gov.uk/line/mode/tube/status"
