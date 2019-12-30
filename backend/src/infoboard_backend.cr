@@ -1,5 +1,5 @@
 require "kemal"
-require "./tube_checker"
+require "./tfl/checker"
 require "./open_weather/checker"
 
 module InfoboardBackend
@@ -10,7 +10,7 @@ module InfoboardBackend
   end
 
   get "/tube" do
-    TubeChecker.new.problems.to_json
+    TFL::Checker.new.problems.to_json
   end
 
   get "/weather" do

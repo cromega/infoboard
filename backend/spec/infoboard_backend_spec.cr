@@ -31,9 +31,8 @@ describe InfoboardBackend do
         to_return(body: File.read("spec/fixtures/openweathermap_response.json"))
     end
 
-    it "responds with the 4 upcoming forecast entries", focus: true do
+    it "responds with the 4 upcoming forecast entries" do
       get "/weather"
-      puts response.body
       #data = JSON.parse(response.body)
       #data.size.should eq 4
     end
