@@ -11,7 +11,6 @@ module OpenWeather
       data = ForecastResponse.from_json(response.body)
 
       [] of Forecast
-
     end
 
     private def token : String
