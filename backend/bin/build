@@ -1,0 +1,3 @@
+#!/bin/bash -e
+
+crystal build src/infoboard_backend.cr --error-on-warnings
