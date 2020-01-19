@@ -1,0 +1,9 @@
+#!/bin/bash -e
+
+if [[ "$@" = "-w" ]]; then
+  echo "Running with watch"
+  rerun -x -c -b -p '**/*.cr' -- crystal spec
+else
+  echo "Running without watch"
+  crystal spec
+fi
