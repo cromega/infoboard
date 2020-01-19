@@ -1,5 +1,5 @@
 module TFL
-  class LineInfo
+  class StatusResponse
     JSON.mapping(
       id: String,
       line_statuses: {type: Array(LineStatus), key: "lineStatuses"}

@@ -1,6 +1,6 @@
 module TFL
   class TubeStatus
-    def initialize(@line_info : LineInfo); end
+    def initialize(@line_info : StatusResponse); end
 
     def line : String
       @line_info.id
