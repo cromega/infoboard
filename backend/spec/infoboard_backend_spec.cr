@@ -27,7 +27,7 @@ describe InfoboardBackend do
 
   describe "GET /weather" do
     before_each do
-      WebMock.stub(:get, "https://api.openweathermap.org/data/2.5/forecast?mode=json&q=London,uk&units=metric&appid=token").
+      WebMock.stub(:get, "https://api.openweathermap.org/data/2.5/forecast?mode=json&q=London,uk&units=metric&cnt=4&appid=token").
         to_return(body: File.read("spec/fixtures/openweathermap_response.json"))
     end
 

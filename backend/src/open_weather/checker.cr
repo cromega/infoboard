@@ -19,6 +19,7 @@ module OpenWeather
         mode: "json",
         q: "London,uk",
         units: "metric",
+        cnt: "4",
         appid: token
       })
 
