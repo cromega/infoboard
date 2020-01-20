@@ -15,7 +15,13 @@ module OpenWeather
     end
 
     private def url : String
-      params = HTTP::Params.encode({mode: "json", q: "London,uk", appid: token})
+      params = HTTP::Params.encode({
+        mode: "json",
+        q: "London,uk",
+        units: "metric",
+        appid: token
+      })
+
       "#{BASE_URL}?#{params}"
     end
 
