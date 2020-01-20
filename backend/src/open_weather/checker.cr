@@ -10,6 +10,7 @@ module OpenWeather
 
     def forecast : Array(Forecast)
       Fetcher(ForecastResponse).new.fetch(url).list
+        .first(4)
         .map { |forecast| Forecast.new(forecast) }
     end
 

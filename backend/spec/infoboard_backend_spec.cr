@@ -33,8 +33,9 @@ describe InfoboardBackend do
 
     it "responds with the 4 upcoming forecast entries" do
       get "/weather"
-      #data = JSON.parse(response.body)
-      #data.size.should eq 4
+      data = JSON.parse(response.body)
+      data.size.should eq 4
+      data[0]["time"].should eq "12:00:00"
     end
   end
 end
