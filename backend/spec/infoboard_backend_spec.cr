@@ -1,6 +1,8 @@
 require "./spec_helper"
 require "webmock"
 
+ENV["OPENWEATHERMAP_API_TOKEN"] = "token"
+
 require "../src/infoboard_backend"
 
 describe InfoboardBackend do
@@ -25,8 +27,6 @@ describe InfoboardBackend do
 
   describe "GET /weather" do
     before_each do
-      ENV["OPENWEATHERMAP_API_TOKEN"] = "token"
-
       WebMock.stub(:get, "https://api.openweathermap.org/data/2.5/forecast?mode=json&q=London,uk&appid=token").
         to_return(body: File.read("spec/fixtures/openweathermap_response.json"))
     end

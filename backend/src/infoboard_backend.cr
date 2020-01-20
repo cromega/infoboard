@@ -9,13 +9,37 @@ module InfoboardBackend
     "OK"
   end
 
-  get "/tube" do
-    TFL::Checker.new.problems.to_json
+  class TflController
+    def initialize
+      @checker = TFL::Checker.new
+    end
+
+    def load
+      get "/tube" do
+        @checker.problems.to_json
+      end
+    end
   end
 
-  get "/weather" do
-    OpenWeather::Checker.new.forecast.to_json
+  class WeatherController
+    def initialize
+      @checker = OpenWeather::Checker.new(token: ENV["OPENWEATHERMAP_API_TOKEN"])
+    end
+
+    def load
+      get "/weather" do
+        @checker.forecast.to_json
+      end
+    end
+  end
+
+
+  def self.initialize
+    TflController.new.load
+    WeatherController.new.load
   end
 end
 
+
+InfoboardBackend.initialize
 Kemal.run

@@ -6,6 +6,8 @@ module OpenWeather
   class Checker
     BASE_URL = "https://api.openweathermap.org/data/2.5/forecast"
 
+    def initialize(@token : String); end
+
     def forecast : Array(Forecast)
       Fetcher(ForecastResponse).new.fetch(url).list
         .map { |forecast| Forecast.new(forecast) }
