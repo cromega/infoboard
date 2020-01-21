@@ -1,6 +1,6 @@
 'use strict';
 
-//require("./style.scss")
+require("./css/style.scss")
 
 var Elm = require('./Home').Elm
 var target = document.getElementById('app');
