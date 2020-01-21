@@ -9,5 +9,5 @@
 
 ```sh
 yarn
-npm run start
+npm run dev # or remote-dev if the server is on a vm
 ```
