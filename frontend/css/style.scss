@@ -1,0 +1,10 @@
+body {
+  width: 480px;
+  height: 320px;
+  box-sizing: border-box;
+  border: 1px solid darkgray;
+  overflow: hidden;
+  background-color: gray;
+}
+
+.clearfix { clear: both; }
