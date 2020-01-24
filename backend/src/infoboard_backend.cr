@@ -40,6 +40,5 @@ module InfoboardBackend
   end
 end
 
-
 InfoboardBackend.initialize
 Kemal.run

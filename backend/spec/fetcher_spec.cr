@@ -36,7 +36,8 @@ describe Fetcher do
       end
 
       it "raises an exception" do
-        expect_raises(Fetcher::FetchFailed) do
+        message = "Request to test.com failed: Forbidden"
+        expect_raises(Fetcher::FetchFailed, message) do
           Fetcher(ExampleEntity).new.fetch("https://test.com")
         end
       end

@@ -3,7 +3,7 @@ class Fetcher(T)
 
   def fetch(url : String) : T
     response = HTTP::Client.get(url)
-    handle_failure(response) unless response.success?
+    handle_failure(url, response) unless response.success?
 
     begin
       T.from_json(response.body)
@@ -13,8 +13,8 @@ class Fetcher(T)
     end
   end
 
-  private def handle_failure(response : HTTP::Client::Response) : Void
-    puts "Failed to run request: #{response.body}"
-    raise FetchFailed.new("boo") unless response.success?
+  private def handle_failure(url, response)
+    host = URI.parse(url).hostname
+    raise FetchFailed.new("Request to #{host} failed: #{response.body}")# unless response.success?
   end
 end
