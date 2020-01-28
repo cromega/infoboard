@@ -93,7 +93,7 @@ view model =
 loadForecast : Cmd Msg
 loadForecast =
   Http.get
-    { url = "http://localhost:3000/weather"
+    { url = "/weather"
     , expect = Http.expectJson GotForecast forecastsDecoder
     }
 
