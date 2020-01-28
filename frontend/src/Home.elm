@@ -139,6 +139,7 @@ forecastDecoder =
 
 
 
+-- DEBUG
 
 buildErrorMessage : Http.Error -> String
 buildErrorMessage httpError =
