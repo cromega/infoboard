@@ -12,8 +12,8 @@ import Json.Decode as Decode exposing (Decoder, field, float, string, map4)
 
 type alias Forecast =
   { time : String
-  , temp_min : String
-  , temp_max : String
+  , temp_min : Float
+  , temp_max : Float
   , icon : String
   }
 
@@ -81,11 +81,38 @@ view : Model -> Html Msg
 view model =
   case model of
     Loading -> div [] [ h1 [] [ text "Loading" ] ]
-    Success forecast -> text "forecast yeah"
+    Success forecast -> renderWeather forecast
     Failure err ->
-      h1 [] [ text (buildErrorMessage err) ]
+      h2 [] [ text (buildErrorMessage err) ]
 
+renderWeather : Forecasts -> Html Msg
+renderWeather forecasts =
+  div [ id "weather-info" ]
+    [ ul [ class "forecast" ] (List.map renderForecast forecasts) ]
 
+renderForecast : Forecast -> Html Msg
+renderForecast forecast =
+  li [ class "forecast-entry" ]
+    [ span [ class "time" ] [ text forecast.time ]
+    , img [ class "icon", src (iconUrl forecast.icon) ] []
+    , div [ class "clearfix" ] []
+    , (renderTemperature forecast.temp_min forecast.temp_max)
+    ]
+
+renderTemperature : Float -> Float -> Html Msg
+renderTemperature min max =
+  let
+    minStr = String.fromInt (round min)
+    maxStr = String.fromInt (round max)
+  in
+    if minStr == maxStr then
+      text (minStr ++ "C")
+    else
+      text (minStr ++ "-" ++ maxStr ++ "C")
+
+iconUrl : String -> String
+iconUrl icon =
+  "http://openweathermap.org/img/w/" ++ icon ++ ".png"
 
 -- HTTP
 
@@ -106,8 +133,8 @@ forecastDecoder : Decoder Forecast
 forecastDecoder =
   Decode.map4 Forecast
     (Decode.at [ "time" ] Decode.string)
-    (Decode.at [ "temp_min" ] Decode.string)
-    (Decode.at [ "temp_max" ] Decode.string)
+    (Decode.at [ "temp_min" ] Decode.float)
+    (Decode.at [ "temp_max" ] Decode.float)
     (Decode.at [ "icon" ] Decode.string)
 
 
