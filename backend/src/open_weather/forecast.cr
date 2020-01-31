@@ -3,7 +3,7 @@ module OpenWeather
     def initialize(@forecast : ForecastEntry); end
 
     def time : String
-      Time.unix(@forecast.dt).to_s("%H:%M:%S")
+      Time.unix(@forecast.dt).to_s("%H:%M")
     end
 
     def temp_min : Float64

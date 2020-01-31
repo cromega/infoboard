@@ -35,7 +35,7 @@ describe InfoboardBackend do
       get "/weather"
       data = JSON.parse(response.body)
       data.size.should eq 4
-      data[0]["time"].should eq "12:00:00"
+      data[0]["time"].should eq "12:00"
     end
   end
 end

@@ -5,7 +5,7 @@ module OpenWeather
     describe "time" do
       it "returns the reading timestamp" do
         forecast = Forecast.new(ForecastEntry.from_json(File.read("spec/fixtures/forecast_entry.json")))
-        forecast.time.should eq "12:00:00"
+        forecast.time.should eq "12:00"
       end
     end
 
