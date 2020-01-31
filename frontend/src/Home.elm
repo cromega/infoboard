@@ -1,12 +1,10 @@
-module Home exposing (..)
+module Home exposing (main)
 
 import Browser
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Html.Events exposing (..)
 import Http
-import Json.Decode as Decode exposing (Decoder, field, float, string, map4)
---import Json.Decode.Pipeline exposing (required)
+import Json.Decode as Decode exposing (Decoder, float, string, map4)
 
 -- TYPES
 
@@ -22,6 +20,7 @@ type alias Forecasts = List Forecast
 -- MAIN
 
 
+main : Program () Model Msg
 main =
   Browser.element
     { init = init
@@ -54,7 +53,7 @@ init _ =
 
 
 update : Msg -> Model -> (Model, Cmd Msg)
-update msg model =
+update msg _ =
   case msg of
     GotForecast result ->
       case result of
@@ -69,7 +68,7 @@ update msg model =
 
 
 subscriptions : Model -> Sub Msg
-subscriptions model =
+subscriptions _ =
   Sub.none
 
 
@@ -96,7 +95,7 @@ renderForecast forecast =
     [ span [ class "time" ] [ text forecast.time ]
     , img [ class "icon", src (iconUrl forecast.icon) ] []
     , div [ class "clearfix" ] []
-    , (renderTemperature forecast.temp_min forecast.temp_max)
+    , renderTemperature forecast.temp_min forecast.temp_max
     ]
 
 renderTemperature : Float -> Float -> Html Msg
