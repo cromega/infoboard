@@ -1,6 +1,6 @@
 'use strict';
 
-require("./css/style.scss")
+import "./css/style.scss";
 
-var Elm = require('elm/App').Elm
+import { Elm } from 'elm/App';
 Elm.App.init({node: document.getElementById('app')});
