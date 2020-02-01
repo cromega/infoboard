@@ -2,5 +2,5 @@
 
 require("./css/style.scss")
 
-var Elm = require('./App').Elm
+var Elm = require('elm/App').Elm
 Elm.App.init({node: document.getElementById('app')});
