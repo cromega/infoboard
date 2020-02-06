@@ -3,6 +3,7 @@ module App exposing (main)
 import Browser
 import Http
 import Html exposing (..)
+import Time
 
 import WeatherPanel
 import ViewHelpers
@@ -23,23 +24,31 @@ main =
     , view = view
     }
 
-type alias ForecastResponse = String
+
+type alias PanelResponse = String
+type alias PanelData =
+  { data : PanelResponse
+  , error : Http.Error
+  }
 
 
 -- MODEL
 
 
 type Model
-  = Loading
-  | Success ForecastResponse
-  | Failure Http.Error
+  = Starting
+  | ShowingWeatherForecast PanelData
+  | ShowingTubeStatus PanelData
+  -- | FetchSuccess PanelData
+  -- | FetchFailed Http.Error
 
 type Msg
-  = GotForecast (Result Http.Error ForecastResponse)
+  = GotForecast (Result Http.Error PanelResponse)
+  | ShowNextPanel Time.Posix
 
 init : () -> (Model, Cmd Msg)
 init _ =
-  (Loading, loadForecast)
+  (Starting, loadForecast)
 
 
 
@@ -49,10 +58,8 @@ init _ =
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg _ =
   case msg of
-    GotForecast result ->
-      case result of
-        Ok body -> (Success body, Cmd.none)
-        Err err -> (Failure err, Cmd.none)
+    GotForecast paneldata ->
+      (ShowingWeatherForecast paneldata)
 
 
 -- SUBSCRIPTIONS
@@ -60,7 +67,7 @@ update msg _ =
 
 subscriptions : Model -> Sub Msg
 subscriptions _ =
-  Sub.none
+  Time.every 2000 ShowNextPanel
 
 
 
@@ -70,10 +77,8 @@ subscriptions _ =
 view : Model -> Html Msg
 view model =
   case model of
-    Loading -> div [] [ h1 [] [ text "Loading" ] ]
-    Success body -> WeatherPanel.render body
-    Failure err ->
-      h2 [] [ text (ViewHelpers.formatHttpResponseError err) ]
+    Starting -> div [] [ h1 [] [ text "Starting up" ] ]
+    ShowingWeatherForecast data -> WeatherPanel.render data.Data
 
 -- HTTP
 

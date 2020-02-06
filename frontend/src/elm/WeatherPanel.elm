@@ -15,7 +15,7 @@ type alias Forecast =
 
 type alias Forecasts = List Forecast
 
-render : String -> Html str
+render : (String, Http.Error) -> Html str
 render json =
   case JD.decodeString forecastsDecoder json of
     Ok forecast -> renderWeather forecast
