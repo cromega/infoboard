@@ -6,7 +6,9 @@ import Html exposing (..)
 import Time
 
 import WeatherPanel
+import TubeStatusPanel
 import ViewHelpers
+import CommonTypes exposing (..)
 
 -- TYPES
 
@@ -25,30 +27,29 @@ main =
     }
 
 
-type alias PanelResponse = String
-type alias PanelData =
-  { data : PanelResponse
-  , error : Http.Error
-  }
-
-
 -- MODEL
 
 
-type Model
+type alias Model =
+  { weatherResult : Maybe HttpResult
+  , tubeStatusResult : Maybe HttpResult
+  , readyPanels : Int
+  , viewState : ViewState
+  }
+
+type ViewState
   = Starting
-  | ShowingWeatherForecast PanelData
-  | ShowingTubeStatus PanelData
-  -- | FetchSuccess PanelData
-  -- | FetchFailed Http.Error
+  | ShowWeather
+  | ShowTubeStatus
 
 type Msg
-  = GotForecast (Result Http.Error PanelResponse)
-  | ShowNextPanel Time.Posix
+  = GotForecast HttpResult
+  | GotTubeStatus HttpResult
+  | Swap Time.Posix
 
 init : () -> (Model, Cmd Msg)
 init _ =
-  (Starting, loadForecast)
+  (Model Nothing Nothing 0 Starting, Cmd.batch [loadForecast, loadTubeStatus])
 
 
 
@@ -56,10 +57,17 @@ init _ =
 
 
 update : Msg -> Model -> (Model, Cmd Msg)
-update msg _ =
+update msg model =
   case msg of
-    GotForecast paneldata ->
-      (ShowingWeatherForecast paneldata)
+    GotForecast result ->
+      ({model | weatherResult = Just result, readyPanels = model.readyPanels + 1, viewState = ShowWeather}, Cmd.none)
+    GotTubeStatus result ->
+      ({model | tubeStatusResult = Just result, readyPanels = model.readyPanels + 1, viewState = ShowTubeStatus}, Cmd.none)
+    Swap _->
+      if model.viewState == ShowWeather then
+        ({model | viewState = ShowTubeStatus}, Cmd.none)
+      else
+        ({model | viewState = ShowWeather}, Cmd.none)
 
 
 -- SUBSCRIPTIONS
@@ -67,18 +75,17 @@ update msg _ =
 
 subscriptions : Model -> Sub Msg
 subscriptions _ =
-  Time.every 2000 ShowNextPanel
-
-
+  Time.every 3000 Swap
 
 -- VIEW
 
 
 view : Model -> Html Msg
 view model =
-  case model of
-    Starting -> div [] [ h1 [] [ text "Starting up" ] ]
-    ShowingWeatherForecast data -> WeatherPanel.render data.Data
+  case model.viewState of
+    Starting -> div [] [ h1 [] [ text "Fetching data" ] ]
+    ShowWeather -> WeatherPanel.render model.weatherResult
+    ShowTubeStatus -> TubeStatusPanel.render model.tubeStatusResult
 
 -- HTTP
 
@@ -89,3 +96,11 @@ loadForecast =
     { url = "/weather"
     , expect = Http.expectString GotForecast
     }
+
+loadTubeStatus : Cmd Msg
+loadTubeStatus =
+  Http.get
+    { url = "/tube"
+    , expect = Http.expectString GotTubeStatus
+    }
+

@@ -3,6 +3,10 @@ module WeatherPanel exposing (render)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Json.Decode as JD exposing (float, string, map4)
+import Http exposing (Error)
+
+import CommonTypes exposing (..)
+import ViewHelpers exposing (..)
 
 -- TYPES
 
@@ -15,11 +19,18 @@ type alias Forecast =
 
 type alias Forecasts = List Forecast
 
-render : (String, Http.Error) -> Html str
-render json =
-  case JD.decodeString forecastsDecoder json of
-    Ok forecast -> renderWeather forecast
-    Err err -> text "faszom error"
+render : Maybe HttpResult -> Html str
+render response =
+  case response of
+    Nothing -> text "Loading"
+    Just body ->
+      case body of
+        Ok json ->
+          case JD.decodeString forecastsDecoder json of
+            Ok forecast -> renderWeather forecast
+            Err err -> text "faszom error"
+        Err err ->
+          text (formatHttpResponseError err)
 
 -- VIEW
 renderWeather : Forecasts -> Html str
