@@ -1,4 +1,4 @@
-module TubeStatusPanel exposing (render)
+module Panels.TubeStatusPanel exposing (render)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)

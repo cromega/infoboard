@@ -1,4 +1,4 @@
-module WeatherPanel exposing (render)
+module Panels.WeatherPanel exposing (render)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)

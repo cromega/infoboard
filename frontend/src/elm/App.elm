@@ -5,9 +5,8 @@ import Http
 import Html exposing (..)
 import Time
 
-import WeatherPanel
-import TubeStatusPanel
-import ViewHelpers
+import Panels.WeatherPanel
+import Panels.TubeStatusPanel
 import CommonTypes exposing (..)
 
 -- TYPES
@@ -83,8 +82,8 @@ view : Model -> Html Msg
 view model =
   case model.viewState of
     Starting -> div [] [ h1 [] [ text "Fetching data" ] ]
-    ShowWeather -> WeatherPanel.render model.weatherResult
-    ShowTubeStatus -> TubeStatusPanel.render model.tubeStatusResult
+    ShowWeather -> Panels.WeatherPanel.render model.weatherResult
+    ShowTubeStatus -> Panels.TubeStatusPanel.render model.tubeStatusResult
 
 -- HTTP
 
