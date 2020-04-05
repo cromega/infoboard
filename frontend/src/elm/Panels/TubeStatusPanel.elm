@@ -33,7 +33,14 @@ render response =
 
 renderTubeStatus : TubeStatus -> Html str
 renderTubeStatus lines =
-  text "itt lesznek a metrok"
+  div [ id "tube-disruptions" ] <| List.map renderLine lines
+
+renderLine : LineStatus -> Html str
+renderLine line =
+  div [ class line.line, class "column" ]
+    [ p []
+      [ text line.status ]
+    ]
 
 -- JSON
 

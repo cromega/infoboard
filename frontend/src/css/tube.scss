@@ -1,10 +1,11 @@
 #tube-disruptions {
   position: absolute;
-  width: 100%;
+  width: 480px;
   display: table;
 
-  .coloumn {
-    max-width: 140px;
+  .column {
+    max-width: 120px;
+    max-height: 160px;
     display: table;
     float: left;
     height: 320px;
@@ -25,13 +26,14 @@
   .central { background-color: #E32017; }
   .circle { background-color: #FFD300; }
   .district { background-color: #00782A; }
-  .hammersmith { background-color: #F3A9BB; }
+  .hammersmith-city { background-color: #F3A9BB; }
   .jubilee { background-color: #A0A5A9; }
   .metropolitan { background-color: #9B0056; }
   .northern { background-color: #000000; }
   .piccadilly { background-color: #003688; }
   .victoria { background-color: #0098D4; }
-  .waterloo { background-color: #95CDBA; }
+  .waterloo-city { background-color: #95CDBA; }
+  .elizabeth { background-color: #6950A1; }
   .dlr { background-color: #00A4A7; }
   .overground { background-color: #EE7C0E; }
 }
