@@ -1,4 +1,4 @@
-FROM crystallang/crystal:0.32.1 as builder
+FROM crystallang/crystal:0.33.0 as builder
 
 ADD . /app
 RUN cd /app && bin/build
