@@ -5,9 +5,13 @@
 * yarn
 * nodejs
 
-## Setup
+## Run
+
+1. Start the backend, see the readme
+1. Start the frontend:
 
 ```sh
 yarn
-npm run dev # or remote-dev if the server is on a vm
+yarn dev # or remote-dev if the server is on a local vm
+# visit http://localhost:8080
 ```
