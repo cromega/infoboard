@@ -22,14 +22,10 @@ module OpenWeather
         q: "London,uk",
         units: "metric",
         cnt: "4",
-        appid: token
+        appid: @token
       })
 
       "#{BASE_URL}?#{params}"
-    end
-
-    private def token : String
-      ENV["OPENWEATHERMAP_API_TOKEN"]
     end
   end
 end
