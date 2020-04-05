@@ -1,0 +1,12 @@
+FROM crystallang/crystal:0.33.0-alpine as builder
+
+ADD . /app
+RUN cd /app && crystal build src/infoboard_backend.cr --error-on-warnings --static
+
+FROM alpine:3.11
+
+RUN apk add --no-cache libevent-dev ca-certificates
+COPY --from=builder /app/infoboard_backend /app/
+
+CMD /app/infoboard_backend
+
