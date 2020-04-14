@@ -2,15 +2,12 @@ module App exposing (main)
 
 import Browser
 import Http
-import Html exposing (..)
+import Html exposing (Html)
 import Time
 
 import Panels.WeatherPanel
 import Panels.TubeStatusPanel
 import CommonTypes exposing (..)
-
--- TYPES
-
 
 
 -- MAIN
@@ -91,7 +88,7 @@ subscriptions _ =
 view : Model -> Html Msg
 view model =
   case model.viewState of
-    Starting -> div [] [ h1 [] [ text "Fetching data" ] ]
+    Starting -> Html.h1 [] [ Html.text "Fetching data" ]
     ShowWeather -> Panels.WeatherPanel.render model.weatherResult
     ShowTubeStatus -> Panels.TubeStatusPanel.render model.tubeStatusResult
 
