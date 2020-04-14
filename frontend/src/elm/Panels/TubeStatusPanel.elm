@@ -16,18 +16,15 @@ type alias LineStatus =
   }
 type alias TubeStatus = List LineStatus
 
-render : Maybe HttpResult -> Html str
-render response =
-  case response of
-    Nothing -> text "Loading"
-    Just body ->
-      case body of
-        Ok json ->
-          case JD.decodeString tubeStatusDecoder json of
-            Ok tubeStatus -> renderTubeStatus tubeStatus
-            Err err -> text "faszom error"
-        Err err ->
-          text (formatHttpResponseError err)
+render : HttpResult -> Html str
+render result =
+  case result of
+    Ok json ->
+      case JD.decodeString tubeStatusDecoder json of
+        Ok tubeStatus -> renderTubeStatus tubeStatus
+        Err err -> text <| "error: " ++ JD.errorToString err
+    Err err ->
+      text (formatHttpResponseError err)
 
 -- VIEW
 

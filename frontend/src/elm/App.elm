@@ -30,8 +30,8 @@ main =
 
 
 type alias Model =
-  { weatherResult : Maybe HttpResult
-  , tubeStatusResult : Maybe HttpResult
+  { weatherResult : HttpResult
+  , tubeStatusResult : HttpResult
   , viewState : ViewState
   }
 
@@ -47,8 +47,7 @@ type Msg
 
 init : () -> (Model, Cmd Msg)
 init _ =
-  (Model Nothing Nothing Starting, Cmd.batch [loadForecast, loadTubeStatus])
-
+  (Model newHttpResult newHttpResult Starting, Cmd.batch [loadForecast, loadTubeStatus])
 
 
 -- UPDATE
@@ -58,9 +57,9 @@ update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
   case msg of
     GotForecast result ->
-      ({model | weatherResult = Just result, viewState = ShowWeather}, Cmd.none)
+      ({model | weatherResult = result, viewState = ShowWeather}, Cmd.none)
     GotTubeStatus result ->
-      ({model | tubeStatusResult = Just result, viewState = ShowTubeStatus}, Cmd.none)
+      ({model | tubeStatusResult = result, viewState = ShowTubeStatus}, Cmd.none)
     Swap _->
       if model.viewState == ShowWeather then
         ({model | viewState = ShowTubeStatus}, Cmd.none)
