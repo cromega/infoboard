@@ -43,11 +43,17 @@ type ViewState
 type Msg
   = GotForecast HttpResult
   | GotTubeStatus HttpResult
+  | Refresh Time.Posix
   | Swap Time.Posix
+
+refresh : Cmd Msg
+refresh =
+  Cmd.batch [loadForecast, loadTubeStatus]
+
 
 init : () -> (Model, Cmd Msg)
 init _ =
-  (Model newHttpResult newHttpResult Starting, Cmd.batch [loadForecast, loadTubeStatus])
+  (Model newHttpResult newHttpResult Starting, refresh)
 
 
 -- UPDATE
@@ -65,6 +71,8 @@ update msg model =
         ({model | viewState = ShowTubeStatus}, Cmd.none)
       else
         ({model | viewState = ShowWeather}, Cmd.none)
+    Refresh _ ->
+      (model, refresh)
 
 
 -- SUBSCRIPTIONS
@@ -72,7 +80,10 @@ update msg model =
 
 subscriptions : Model -> Sub Msg
 subscriptions _ =
-  Time.every 3000 Swap
+  Sub.batch
+  [ Time.every 3000 Swap
+  , Time.every (1000 * 10) Refresh
+  ]
 
 -- VIEW
 
